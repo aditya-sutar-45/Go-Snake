@@ -39,7 +39,16 @@ func DrawBoundaries(screen *ebiten.Image) {
 }
 
 func DrawPlayer(screen *ebiten.Image, g *Game) {
-	for _, obj := range g.Player.Body {
+	for i, obj := range g.Player.Body {
+		if i == 0 {
+			vector.DrawFilledRect(
+				screen,
+				float32(obj.X), float32(obj.Y),
+				float32(obj.W), float32(obj.H),
+				constants.Accent,
+				false,
+			)
+		}
 		vector.DrawFilledRect(
 			screen,
 			float32(obj.X), float32(obj.Y),
