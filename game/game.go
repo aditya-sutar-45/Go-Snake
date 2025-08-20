@@ -20,11 +20,13 @@ type Game struct {
 func (g *Game) Update() error {
 	if !g.GameOver {
 		HandleSnakeInput(g)
+		objects.HandleCollisions(&g.Player, &g.Apples, &g.GameOver, g.IncreaseScore)
+
+		// FOR TEST DELETE LATER
 		if inpututil.IsKeyJustPressed(ebiten.KeySpace) {
 			objects.AddNewTail(&g.Player)
 		}
-
-		objects.HandleCollisions(&g.Player, &g.Apples, &g.GameOver, g.IncreaseScore)
+		//
 
 		g.moveCounter++
 		if g.moveCounter < constants.MoveDelay {
@@ -43,9 +45,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.Fill(constants.Bg)
 
 	DrawBoundaries(screen)
-
 	DrawPlayer(screen, g)
-
 	DrawApples(screen, g)
 }
 
