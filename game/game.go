@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"go-snake/constants"
 	"go-snake/objects"
+	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
@@ -43,6 +45,13 @@ func (g *Game) Update() error {
 }
 func (g *Game) Draw(screen *ebiten.Image) {
 	screen.Fill(constants.Bg)
+
+	// ebitenutil.DebugPrint(screen, "hello world")
+	ebitenutil.DebugPrintAt(
+		screen,
+		"Score: "+strconv.Itoa(g.Score),
+		constants.Boundary, constants.Boundary-constants.GridSize,
+	)
 
 	DrawGrid(screen)
 	DrawBoundaries(screen)
