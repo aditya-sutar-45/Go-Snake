@@ -20,11 +20,11 @@ type Game struct {
 func (g *Game) Update() error {
 	if !g.GameOver {
 		HandleSnakeInput(g)
-		objects.HandleCollisions(&g.Player, &g.Apples, &g.GameOver, g.IncreaseScore)
+		g.Player.HandleCollisions(&g.Apples, &g.GameOver, g.IncreaseScore)
 
 		// FOR TEST DELETE LATER
 		if inpututil.IsKeyJustPressed(ebiten.KeySpace) {
-			objects.AddNewTail(&g.Player)
+			objects.SpawnNewApple(&g.Apples)
 		}
 		//
 
@@ -34,7 +34,7 @@ func (g *Game) Update() error {
 		}
 		g.moveCounter = 0
 
-		objects.MovePlayer(&g.Player)
+		g.Player.MovePlayer()
 	} else {
 		return nil
 	}

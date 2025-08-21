@@ -25,31 +25,14 @@ func main() {
 					W: constants.GridSize,
 				},
 			},
-			Dir: inputs.Up,
+			Dir:     inputs.Up,
+			Growing: false,
 		},
 		Apples: []*objects.Apple{
 			{
 				Obj: objects.Object{
 					X: 350,
 					Y: 450,
-					W: constants.GridSize,
-					H: constants.GridSize,
-				},
-				Color: constants.Red,
-			},
-			{
-				Obj: objects.Object{
-					X: 550,
-					Y: 150,
-					W: constants.GridSize,
-					H: constants.GridSize,
-				},
-				Color: constants.Red,
-			},
-			{
-				Obj: objects.Object{
-					X: 69,
-					Y: 60,
 					W: constants.GridSize,
 					H: constants.GridSize,
 				},

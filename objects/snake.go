@@ -6,8 +6,9 @@ import (
 )
 
 type Snake struct {
-	Body []*Object
-	Dir  inp.Direction
+	Body    []*Object
+	Dir     inp.Direction
+	Growing bool
 }
 
 var (
@@ -17,9 +18,9 @@ var (
 	Right = inp.Right
 )
 
-func MovePlayer(Player *Snake) {
+func (Player *Snake) MovePlayer() {
 	head := Player.Body[0]
-	newHead := Object{
+	newHead := &Object{
 		X: head.X,
 		Y: head.Y,
 		W: constants.GridSize,
@@ -37,77 +38,50 @@ func MovePlayer(Player *Snake) {
 	if Player.Dir == Right {
 		newHead.X += constants.GridSize
 	}
-	Player.Body = append([]*Object{&newHead}, Player.Body...)
-	Player.Body = Player.Body[:len(Player.Body)-1]
-}
 
-func getTailDir(body []*Object) inp.Direction {
-	n := len(body)
+	// new head to the start
+	Player.Body = append([]*Object{newHead}, Player.Body...)
 
-	if n < 2 {
-		return Up
-	}
-
-	last := body[n-1]
-	secondLast := body[n-2]
-
-	if last.X < secondLast.X {
-		return Left
-	} else if last.X > secondLast.X {
-		return Right
-	} else if last.Y < secondLast.Y {
-		return Up
+	if Player.Growing {
+		// if player is growning no need to trim the end of the array
+		// and set growing to false
+		Player.Growing = false
 	} else {
-		return Down
+		// if player is not growing remove the last element
+		Player.Body = Player.Body[:len(Player.Body)-1]
 	}
 }
 
-func AddNewTail(Player *Snake) {
-	last := Player.Body[len(Player.Body)-1]
-
-	dirToAdd := getTailDir(Player.Body)
-
-	newTail := Object{
-		X: last.X,
-		Y: last.Y,
-		W: constants.GridSize,
-		H: constants.GridSize,
-	}
-
-	if dirToAdd == Down {
-		newTail.Y -= constants.GridSize
-	}
-	if dirToAdd == Up {
-		newTail.Y += constants.GridSize
-	}
-	if dirToAdd == Right {
-		newTail.X += constants.GridSize
-	}
-	if dirToAdd == Left {
-		newTail.X -= constants.GridSize
-	}
-
-	Player.Body = append(Player.Body, &newTail)
-	// fmt.Println("added tail")
-}
-
-func HandleCollisions(Player *Snake, Apples *[]*Apple, gameOver *bool, IncreaseScore func(int)) {
+func (Player *Snake) HandleCollisions(Apples *[]*Apple, gameOver *bool, IncreaseScore func(int)) {
+	// collisions that end the game
 	head := Player.Body[0]
 	outOfBounds := head.X <= constants.Boundary || head.X >= constants.GameX+constants.Boundary ||
 		head.Y <= constants.Boundary || head.Y >= constants.GameY+constants.Boundary
 
+	collidedWithBody := false
+
+	for i := 1; i < len(Player.Body); i++ {
+		body := Player.Body[i]
+
+		if head.X == body.X && head.Y == body.Y {
+			collidedWithBody = true
+			break
+		}
+	}
+
+	if outOfBounds || collidedWithBody {
+		*gameOver = true
+	}
+
+	// apple collisions
 	for ind := 0; ind < len(*Apples); ind++ {
 		apple := (*Apples)[ind]
 		if head.X == apple.Obj.X && head.Y == apple.Obj.Y {
+			Player.Growing = true
 			IncreaseScore(1)
-			AddNewTail(Player)
 			// remove the apple
 			*Apples = append((*Apples)[:ind], (*Apples)[ind+1:]...)
 			ind--
 		}
-	}
-
-	if outOfBounds {
-		*gameOver = true
 	}
 }
