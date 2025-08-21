@@ -7,6 +7,28 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
+func DrawGrid(screen *ebiten.Image) {
+	for x := constants.Boundary + constants.GridSize; x <= constants.GameX+constants.Boundary-constants.GridSize; x += constants.GridSize {
+		vector.StrokeLine(
+			screen,
+			float32(x), constants.Boundary+constants.GridSize,
+			float32(x), constants.GameY+constants.Boundary,
+			2, constants.GridBg,
+			false,
+		)
+	}
+	for y := constants.Boundary + constants.GridSize; y <= constants.GameY+constants.Boundary-constants.GridSize; y += constants.GridSize {
+		vector.StrokeLine(
+			screen,
+			constants.Boundary+constants.GridSize, float32(y),
+			constants.GameY+constants.Boundary, float32(y),
+			2, constants.GridBg,
+			false,
+		)
+	}
+
+}
+
 func DrawBoundaries(screen *ebiten.Image) {
 	// top constants.Boundary
 	vector.DrawFilledRect(screen,
