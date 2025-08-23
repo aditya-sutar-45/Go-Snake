@@ -6,9 +6,11 @@ import (
 )
 
 type Snake struct {
-	Body    []*Object
-	Dir     inp.Direction
-	Growing bool
+	Body                    []*Object
+	Dir                     inp.Direction
+	Growing                 bool
+	CurrentMoveDelay        float32
+	DelayDecreaseMultiplier float32
 }
 
 var (
@@ -45,6 +47,10 @@ func (Player *Snake) MovePlayer() {
 	if Player.Growing {
 		// if player is growning no need to trim the end of the array
 		// and set growing to false
+		Player.CurrentMoveDelay *= Player.DelayDecreaseMultiplier
+		if Player.CurrentMoveDelay <= constants.MinMoveDelay {
+			Player.CurrentMoveDelay = constants.MinMoveDelay
+		}
 		Player.Growing = false
 	} else {
 		// if player is not growing remove the last element

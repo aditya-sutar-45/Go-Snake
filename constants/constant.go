@@ -9,7 +9,8 @@ const (
 	GameY           = 800
 	Boundary        = (SHeight - GameX) / 2
 	GridSize        = 20
-	MoveDelay       = 20
+	MoveDelay       = 13
+	MinMoveDelay    = 7
 	AppleSpawnDelay = 10
 )
 

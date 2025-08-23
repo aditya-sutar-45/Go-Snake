@@ -25,8 +25,10 @@ func main() {
 					W: constants.GridSize,
 				},
 			},
-			Dir:     inputs.Up,
-			Growing: false,
+			Dir:                     inputs.Up,
+			Growing:                 false,
+			CurrentMoveDelay:        constants.MoveDelay,
+			DelayDecreaseMultiplier: 0.95,
 		},
 		Apples: []*objects.Apple{
 			{
