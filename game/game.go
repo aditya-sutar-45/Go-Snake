@@ -12,11 +12,12 @@ import (
 )
 
 type Game struct {
-	Player      objects.Snake
-	Apples      []*objects.Apple
-	moveCounter int
-	GameOver    bool
-	Score       int
+	Player            objects.Snake
+	Apples            []*objects.Apple
+	moveCounter       int
+	spawnAppleCounter int
+	GameOver          bool
+	Score             int
 }
 
 func (g *Game) Update() error {
@@ -37,6 +38,14 @@ func (g *Game) Update() error {
 		g.moveCounter = 0
 
 		g.Player.MovePlayer()
+
+		g.spawnAppleCounter++
+		if g.spawnAppleCounter < constants.AppleSpawnDelay {
+			return nil
+		}
+		g.spawnAppleCounter = 0
+
+		objects.SpawnNewApple(&g.Apples)
 	} else {
 		return nil
 	}

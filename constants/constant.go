@@ -3,13 +3,14 @@ package constants
 import "image/color"
 
 const (
-	SHeight   = 900
-	SWidth    = 900
-	GameX     = 800
-	GameY     = 800
-	Boundary  = (SHeight - GameX) / 2
-	GridSize  = 20
-	MoveDelay = 20
+	SHeight         = 900
+	SWidth          = 900
+	GameX           = 800
+	GameY           = 800
+	Boundary        = (SHeight - GameX) / 2
+	GridSize        = 20
+	MoveDelay       = 20
+	AppleSpawnDelay = 10
 )
 
 var (
